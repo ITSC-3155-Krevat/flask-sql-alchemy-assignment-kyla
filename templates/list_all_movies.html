@@ -3,9 +3,9 @@
 {% block title %}Movie Rating App | All Movies{% endblock %}
 
 {% block body %}
-<h1 class="mb-5">All Movies</h1>
-<p class="mb-3">See our list of movie ratings below</p>
-<table class="table">
+<h1 class="mb-5" style="color:#70d3ea;">All Movies</h1>
+<p class="mb-3" style="color:silver;">See our list of movie ratings below</p>
+<table class="table" style="color:silver;">
   <thead>
     <tr>
       <th>Title</th>
@@ -15,6 +15,13 @@
   </thead>
   <tbody>
     <!-- TODO - Render movies in a table with a link on the title to the individual movie page -->
+    {% for index in movies %}
+    <tr>
+        <td style="color:silver;">{{index.title}}</td>
+        <td style="color:silver;">{{index.director}}</td>
+        <td style="color:silver;">{{index.rating}}</td>
+    </tr>>
+    {% endfor %}
   </tbody>
 </table>
 {% endblock %}
