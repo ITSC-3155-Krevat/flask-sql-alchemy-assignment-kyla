@@ -3,25 +3,24 @@
 {% block title %}Movie Rating App | All Movies{% endblock %}
 
 {% block body %}
-<h1 class="mb-5" style="color:#70d3ea;">All Movies</h1>
-<p class="mb-3" style="color:silver;">See our list of movie ratings below</p>
-<table class="table" style="color:silver;">
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>Director</th>
-      <th>Rating</th>
-    </tr>
-  </thead>
-  <tbody>
-    <!-- TODO - Render movies in a table with a link on the title to the individual movie page -->
-    {% for index in movies %}
-    <tr>
-        <td style="color:silver;">{{index.title}}</td>
-        <td style="color:silver;">{{index.director}}</td>
-        <td style="color:silver;">{{index.rating}}</td>
-    </tr>>
-    {% endfor %}
-  </tbody>
-</table>
+<h1 class="mb-5" style="color:red">All Movies</h1>
+<p class="mb-3" style="color:#6d6e6c">See our list of movie ratings below</p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Movie</th>
+                <th>Director</th>
+                <th>Rating</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for index in movies %}
+            <tr>
+                <td>{{index.title}}</td>
+                <td>{{index.director}}</td>
+                <td>{{index.rating}}</td>
+            </tr>>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

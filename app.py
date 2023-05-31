@@ -1,13 +1,11 @@
 from flask import Flask, abort, redirect, render_template, request
-from models import db
-
 from src.repositories.movie_repository import movie_repository_singleton
+from src.models import db
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI']=\
-    'mysql://root:abc123@localhost:3306/university'
+    'mysql://root:abc123@localhost:3306/movies'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
-
 db.init_app(app)
 
 @app.get('/')
@@ -17,36 +15,35 @@ def index():
 
 @app.get('/movies')
 def list_all_movies():
-    all_movies = movie_repository_singleton.get_all_movies()
-    return render_template('list_all_movies.html', list_movies_active=True, movies=all_movies)
-
-
-@app.get('/movies/<int:movie_id>')
-def get_single_movie(movie_id):
-    single_movie = movie_repository_singleton.get_movie_by_id(movie_id)
-    return render_template('get_single_movie.html', movie=single_movie)
+    py_movies = movie_repository_singleton.get_all_movies()
+    return render_template('list_all_movies.html', movies=py_movies, list_movies_active=True)
 
 
 @app.get('/movies/new')
 def create_movies_form():
     return render_template('create_movies_form.html', create_rating_active=True)
 
-
-@app.post('/movies')
+@app.post('/movies/new')
 def create_movie():
-    title = request.form.get('title', '')
-    director = request.form.get('director', '')
-    rating = request.form.get('rating', 0, type=int)
-    if title == '' or director == '' or rating < 1 or rating > 5:
-        abort(400)
-    created_movie = movie_repository_singleton.create_movie(title, director, rating)
-    return redirect(f'/movies/{created_movie.movie_id}')
-
+    # These variables are fetched from /movies/new
+    py_movie = request.form.get('movie')
+    py_director = request.form.get('director')
+    py_rating = request.form.get('rating')
+    if (py_movie != '' and py_director != ''):
+        # Adds movie to dictionary, with movie name as key
+        movie_repository_singleton.create_movie(py_movie, py_director, py_rating) 
+    # After creating the movie in the database, we redirect to a page that lists all the movies
+    return redirect('/movies')
 
 @app.get('/movies/search')
 def search_movies():
-    found_movies = []
-    q = request.args.get('q', '')
-    if q != '':
-        found_movies = movie_repository_singleton.search_movies(q)
-    return render_template('search_movies.html', search_active=True, movies=found_movies, search_query=q)
+    return render_template('search_movies.html', search_active=True)
+
+@app.post('/movies/search')
+def fetch_results():
+    print("Hello?")
+    py_movie = request.form.get('title')
+    print(py_movie)
+    py_result =  movie_repository_singleton.get_movie_by_title(py_movie)
+    print(py_result)
+    return render_template('search_result.html', result=py_result)
